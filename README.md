@@ -145,6 +145,118 @@ shutdown -r now
 
 **Step 7:**
 
+*Create a xfs file system on a new logical volume of 100MB called lv_xfs. Mount it permanently with uuid under /xfs.*
+
+```bash
+lvcreate –size 100M –name lv_xfs /dev/vg
+```
+
+```bash
+mkfs.xfs /dev/vg/lv_xfs
+```
+
+```bash
+mkdir /xfs
+```
+
+```bash
+blkid | grep lv_xfs >> /etc/fstab
+```
+
+```bash
+vi /etc/fstab
+```
+
+```UUID=… /xfs xfs defaults 1 2```
+
+```bash
+mount -a
+```
+
+**Step 8:**
+
+*Create a logical volume of 200MB called lv_swap2 and add it permanently to the current swap space.*
+
+```bash
+lvcreate –size 200M –name lv_swap2 /dev/vg
+```
+
+```bash
+mkswap /dev/vg/lv_swap2
+```
+
+```bash
+swapon /dev/vg/lv_swap2
+```
+
+```vi /etc/fstab```
+
+```/dev/vg/lv_swap2 swap swap defaults 0 0```
+
+**Step 9:**
+
+*Create a cron job running as root, starting at 11PM every day and writing a report on daily system resource consumption in the /var/log/consumption.log file.*
+
+```bash
+crontab -e
+```
+
+```00 23 * * * /usr/bin/sar -A > /var/log/consumption.log```
+
+**Step 10:**
+
+*Set the default target to boot into X Window level (previously level 5).*
+
+```bash
+systemctl set-default graphical.target
+```
+
+**Step 11:**
+
+*Change the hostname to example.vodafone.com*
+
+```bash
+hostnamectl set-hostname mycentos.example.com
+```
+
+**Step 12:**
+
+*Synchronize time with NTP source pool.ntp.org*
+
+```bash
+sudo ntpdate 1.ro.pool.ntp.org
+```
+
+```bash
+sudo ntpdate -qu 1.ro.pool.ntp.org
+```
+
+```bash
+sudo nano /etc/systemd/timesyncd.conf
+```
+
+```bash
+sudo timedatectl set-ntp true 
+timedatectl status
+```
+
+Note: OS may affect specifically minor problems.
+
+**Step 13:**
+
+*Install NFS and export directory /nfs/exports to client 192.168.1.10*
+
+```bash
+driftfile /var/lib/ntp/ntp.drift
+
+server 0.pool.ntp.org
+server 1.pool.ntp.org
+server 2.pool.ntp.org
+server 3.pool.ntp.org
+```
+
+**Step 14:**
+
 *Create an Ansible playbook to install nginx and configure home page to a custom index.html page.*
 
 Install Nginx on Ubuntu server
