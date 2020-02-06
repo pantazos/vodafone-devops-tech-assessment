@@ -216,7 +216,7 @@ systemctl set-default graphical.target
 *Change the hostname to example.vodafone.com*
 
 ```bash
-hostnamectl set-hostname mycentos.example.com
+hostnamectl set-hostname example.vodafone.com
 ```
 
 **Step 12:**
