@@ -59,11 +59,11 @@ New password: 12345678
 ```
 
 ```bash
-# useradd -u 3000 davis
+useradd -u 3000 davis
 ```
 
 ```bash
-# passwd davis
+passwd davis
 New password: 87654321
 ```
 
